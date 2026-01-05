@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSocket } from '../context/SocketContext';
+import { useSocket } from '../../context/SocketContext';
 
 const KitchenDisplay = () => {
   const [orders, setOrders] = useState([]);

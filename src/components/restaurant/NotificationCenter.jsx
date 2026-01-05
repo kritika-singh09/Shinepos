@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSocket } from '../context/SocketContext';
-import { useAuth } from '../context/AuthContext';
+import { useSocket } from '../../context/SocketContext';
+import { useAuth } from '../../context/AuthContext';
 
 const NotificationCenter = () => {
   const [notifications, setNotifications] = useState([]);
