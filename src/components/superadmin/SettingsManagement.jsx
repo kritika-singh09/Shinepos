@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const SettingsManagement = () => {
+const SettingsManagement = ({ activeCategory: initialCategory = 'SYSTEM' }) => {
   const [settings, setSettings] = useState({});
   const [planLimits, setPlanLimits] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('SYSTEM');
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
 
   const categories = {
     SYSTEM: { name: 'System', icon: '⚙️' },
@@ -98,25 +98,25 @@ const SettingsManagement = () => {
   const renderPlanLimitsSection = () => {
     const plans = ['trial', 'basic', 'premium', 'enterprise'];
     const planColors = {
-      trial: 'bg-gray-50 border-gray-200',
-      basic: 'bg-blue-50 border-blue-200',
-      premium: 'bg-purple-50 border-purple-200',
-      enterprise: 'bg-gold-50 border-yellow-200'
+      trial: 'bg-slate-50 border-slate-200',
+      basic: 'bg-indigo-50 border-indigo-200',
+      premium: 'bg-violet-50 border-violet-200',
+      enterprise: 'bg-amber-50 border-amber-200'
     };
 
     return (
       <div className="space-y-6">
         {plans.map(plan => (
           <div key={plan} className={`p-6 rounded-lg border ${planColors[plan]}`}>
-            <h3 className="text-lg font-semibold mb-4 capitalize">{plan} Plan Limits</h3>
+            <h3 className="text-lg font-semibold mb-4 capitalize text-slate-900">{plan} Plan Limits</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Orders Limit</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Orders Limit</label>
                 <input
                   type="number"
                   value={planLimits[plan]?.orders || 0}
                   onChange={(e) => handlePlanLimitChange(plan, 'orders', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
               <div>
@@ -142,7 +142,7 @@ const SettingsManagement = () => {
               <button
                 onClick={() => handlePlanLimitSave(plan)}
                 disabled={saving}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:bg-slate-400 transition-colors"
               >
                 {saving ? 'Saving...' : `Save ${plan.charAt(0).toUpperCase() + plan.slice(1)} Limits`}
               </button>
@@ -155,7 +155,7 @@ const SettingsManagement = () => {
 
   const renderSettingInput = (setting) => {
     const inputProps = {
-      className: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+      className: "w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent",
       onChange: (e) => {
         let value = e.target.value;
         if (typeof setting.value === 'number') {
@@ -198,54 +198,45 @@ const SettingsManagement = () => {
     }
   };
 
-  if (loading) return <div className="p-6">Loading settings...</div>;
+  if (loading) {
+    return (
+      <div className="p-6">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <span className="ml-4 text-gray-600">Loading settings...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">System Settings</h2>
+    <div className="p-4 lg:p-6">
+      <h2 className="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 text-slate-900">System Settings</h2>
       
-      {/* Category Tabs */}
-      <div className="flex space-x-1 mb-6 border-b">
-        {Object.entries(categories).map(([key, category]) => (
-          <button
-            key={key}
-            onClick={() => setActiveCategory(key)}
-            className={`px-4 py-2 font-medium text-sm rounded-t-lg ${
-              activeCategory === key
-                ? 'bg-blue-600 text-white border-b-2 border-blue-600'
-                : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-            }`}
-          >
-            <span className="mr-2">{category.icon}</span>
-            {category.name}
-          </button>
-        ))}
-      </div>
-
       {/* Settings Content */}
       <div className="space-y-6">
         {activeCategory === 'PLAN_LIMITS' ? (
           renderPlanLimitsSection()
         ) : (
           settings[activeCategory]?.map((setting) => (
-            <div key={setting.key} className="bg-white p-6 rounded-lg shadow border">
-              <div className="flex justify-between items-start mb-4">
+            <div key={setting.key} className="bg-white p-4 lg:p-6 rounded-lg shadow border border-slate-200">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 space-y-4 sm:space-y-0">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900">{setting.key}</h3>
+                  <h3 className="text-base lg:text-lg font-semibold text-slate-900">{setting.key}</h3>
                   {setting.description && (
-                    <p className="text-sm text-gray-600 mt-1">{setting.description}</p>
+                    <p className="text-xs lg:text-sm text-slate-600 mt-1">{setting.description}</p>
                   )}
                 </div>
               </div>
               
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <div className="flex-1">
                   {renderSettingInput(setting)}
                 </div>
                 <button
                   onClick={() => handleSave(setting)}
                   disabled={saving}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:bg-slate-400 transition-colors text-sm lg:text-base"
                 >
                   {saving ? 'Saving...' : 'Save'}
                 </button>
@@ -253,7 +244,7 @@ const SettingsManagement = () => {
             </div>
           )) || (
             <div className="text-center py-12">
-              <p className="text-gray-500">No settings found for this category.</p>
+              <p className="text-slate-500">No settings found for this category.</p>
             </div>
           )
         )}

@@ -7,6 +7,8 @@ import BillingManagement from '../components/superadmin/BillingManagement.jsx';
 import SettingsManagement from '../components/superadmin/SettingsManagement.jsx';
 import UserManagement from '../components/superadmin/UserManagement.jsx';
 import CommunicationCenter from '../components/superadmin/CommunicationCenter.jsx';
+import Sidebar from '../components/superadmin/Sidebar.jsx';
+import Logo from '../components/Logo';
 
 const SuperAdminDashboard = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -31,6 +33,7 @@ const SuperAdminDashboard = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isOpen, setIsOpen] = useState(true);
 
   const { user, logout } = useAuth();
 
@@ -162,162 +165,215 @@ const SuperAdminDashboard = () => {
   const totalOrders = analytics.reduce((sum, item) => sum + item.totalOrders, 0);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Super Admin Dashboard</h1>
-              <p className="text-gray-600 mt-1">Manage restaurants and system settings</p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-700">Welcome, {user.name}</span>
-              <button
-                onClick={logout}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Navigation Tabs */}
-        <div className="mb-8">
-          <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8">
-              {[
-                { id: 'overview', name: 'Overview', icon: '📊' },
-                { id: 'monitoring', name: 'System Health', icon: '🔧' },
-                { id: 'analytics', name: 'Analytics', icon: '📈' },
-                { id: 'subscriptions', name: 'Billing', icon: '💳' },
-                { id: 'settings', name: 'Settings', icon: '⚙️' },
-                { id: 'communication', name: 'Communication', icon: '📢' },
-                { id: 'users', name: 'User Management', icon: '👥' },
-                { id: 'content', name: 'Content', icon: '📝' }
-              ].map((tab) => (
+    <div className="min-h-screen bg-indigo-50 flex">
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} isOpen={isOpen} setIsOpen={setIsOpen} />
+      
+      <div className="flex-1">
+        {/* Header */}
+        <div className="bg-indigo-600 shadow-lg border-b border-indigo-700">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-3 lg:py-4">
+              <div className="flex items-center">
                 <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="mr-4 p-2 rounded-lg text-indigo-100 hover:text-white hover:bg-indigo-500 transition-all duration-300"
                 >
-                  <span className="mr-2">{tab.icon}</span>
-                  {tab.name}
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
                 </button>
-              ))}
-            </nav>
+                <div>
+                  <h1 className="text-xl lg:text-2xl font-semibold text-white">Super Admin Dashboard</h1>
+                  <p className="text-indigo-100 mt-1 font-medium text-sm lg:text-base">Manage restaurants and system settings</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2 lg:space-x-4">
+                <span className="text-indigo-100 font-medium text-sm lg:text-base hidden sm:block">Welcome, {user.name}</span>
+                <button
+                  onClick={logout}
+                  className="bg-white hover:bg-indigo-50 text-indigo-600 px-3 lg:px-4 py-2 rounded-lg transition-all duration-300 font-medium shadow-lg hover:shadow-xl text-sm lg:text-base"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 lg:py-4">
         {/* Tab Content */}
         {activeTab === 'overview' && (
-          <div>
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m0 0h2M7 7h10M7 11h10M7 15h10" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Restaurants</p>
-                <p className="text-2xl font-bold text-gray-900">{restaurants.length}</p>
-              </div>
+          <div className="p-3 lg:p-4">
+            {/* Header */}
+            <div className="mb-4 lg:mb-6">
+              <h2 className="text-xl lg:text-2xl font-bold text-slate-900 mb-2">Dashboard Overview</h2>
+              <p className="text-slate-600 text-sm lg:text-base">Monitor your restaurant network performance and key metrics</p>
             </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Active Restaurants</p>
-                <p className="text-2xl font-bold text-gray-900">{restaurants.filter(r => r.isActive).length}</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Orders</p>
-                <p className="text-2xl font-bold text-gray-900">{totalOrders}</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-yellow-100 rounded-lg">
-                <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                </svg>
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-                <p className="text-2xl font-bold text-gray-900">${totalRevenue.toFixed(2)}</p>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Create Restaurant Button */}
-        <div className="mb-8 flex justify-between items-center">
-          <button
-            onClick={() => {
-              setShowCreateForm(!showCreateForm);
-              setEditingRestaurant(null);
-              setFormData({ name: '', adminEmail: '', adminPassword: '', adminName: '', phone: '', address: '', city: '', state: '', zipCode: '', cuisine: '', description: '' });
-            }}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center space-x-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            <span>{showCreateForm ? 'Cancel' : 'Create New Restaurant'}</span>
-          </button>
-          
-          <div className="flex items-center space-x-4">
-            <input
-              type="text"
-              placeholder="Search restaurants..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            {selectedRestaurants.length > 0 && (
-              <button
-                onClick={handleBulkToggle}
-                className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-              >
-                Bulk Toggle ({selectedRestaurants.length})
-              </button>
-            )}
-          </div>
-        </div>
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-4 mb-4 lg:mb-6">
+              <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-indigo-100 text-sm font-medium">Total Restaurants</p>
+                    <p className="text-3xl font-bold mt-2">{restaurants.length}</p>
+                    <p className="text-indigo-100 text-xs mt-1">+2 this month</p>
+                  </div>
+                  <div className="bg-indigo-400 bg-opacity-30 rounded-full p-3">
+                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-xl shadow-lg p-6 text-white">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-emerald-100 text-sm font-medium">Active Restaurants</p>
+                    <p className="text-3xl font-bold mt-2">{restaurants.filter(r => r.isActive).length}</p>
+                    <p className="text-emerald-100 text-xs mt-1">{((restaurants.filter(r => r.isActive).length / restaurants.length) * 100).toFixed(1)}% active</p>
+                  </div>
+                  <div className="bg-emerald-400 bg-opacity-30 rounded-full p-3">
+                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-violet-500 to-violet-600 rounded-xl shadow-lg p-6 text-white">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-violet-100 text-sm font-medium">Total Orders</p>
+                    <p className="text-3xl font-bold mt-2">{totalOrders.toLocaleString()}</p>
+                    <p className="text-violet-100 text-xs mt-1">+12% from last month</p>
+                  </div>
+                  <div className="bg-violet-400 bg-opacity-30 rounded-full p-3">
+                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl shadow-lg p-6 text-white">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-amber-100 text-sm font-medium">Total Revenue</p>
+                    <p className="text-3xl font-bold mt-2">${totalRevenue.toLocaleString()}</p>
+                    <p className="text-amber-100 text-xs mt-1">+8% from last month</p>
+                  </div>
+                  <div className="bg-amber-400 bg-opacity-30 rounded-full p-3">
+                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 lg:gap-4 mb-4 lg:mb-6">
+              <div className="xl:col-span-2">
+                <div className="bg-white rounded-xl shadow-lg p-3 lg:p-4">
+                  <div className="flex justify-between items-center mb-3 lg:mb-4">
+                    <h3 className="text-base lg:text-lg font-bold text-slate-900">Quick Actions</h3>
+                  </div>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3">
+                    <button
+                      onClick={() => {
+                        setShowCreateForm(!showCreateForm);
+                        setEditingRestaurant(null);
+                        setFormData({ name: '', adminEmail: '', adminPassword: '', adminName: '', phone: '', address: '', city: '', state: '', zipCode: '', cuisine: '', description: '' });
+                      }}
+                      className="flex flex-col items-center p-4 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors"
+                    >
+                      <div className="bg-indigo-600 rounded-full p-3 mb-3">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-slate-900">Add Restaurant</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => setActiveTab('users')}
+                      className="flex flex-col items-center p-4 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors"
+                    >
+                      <div className="bg-emerald-600 rounded-full p-3 mb-3">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-slate-900">Manage Users</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => setActiveTab('monitoring')}
+                      className="flex flex-col items-center p-4 bg-violet-50 hover:bg-violet-100 rounded-lg transition-colors"
+                    >
+                      <div className="bg-violet-600 rounded-full p-3 mb-3">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-slate-900">System Health</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => setActiveTab('analytics')}
+                      className="flex flex-col items-center p-4 bg-amber-50 hover:bg-amber-100 rounded-lg transition-colors"
+                    >
+                      <div className="bg-amber-600 rounded-full p-3 mb-3">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <span className="text-sm font-medium text-slate-900">Analytics</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-lg p-3 lg:p-4">
+                <h3 className="text-base lg:text-lg font-bold text-slate-900 mb-3">System Status</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-600">Server Status</span>
+                    <span className="flex items-center text-emerald-600">
+                      <div className="w-2 h-2 bg-emerald-600 rounded-full mr-2"></div>
+                      Online
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-600">Database</span>
+                    <span className="flex items-center text-emerald-600">
+                      <div className="w-2 h-2 bg-emerald-600 rounded-full mr-2"></div>
+                      Connected
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-600">API Response</span>
+                    <span className="text-slate-900 font-medium">~180ms</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-600">Uptime</span>
+                    <span className="text-slate-900 font-medium">99.9%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
         {/* Create Form */}
         {showCreateForm && (
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-6">
+          <div className="bg-white rounded-lg shadow-lg p-3 lg:p-4 mb-4 lg:mb-6">
+            <h3 className="text-base lg:text-lg font-bold text-gray-900 mb-3 lg:mb-4">
               {editingRestaurant ? 'Edit Restaurant' : 'Create New Restaurant'}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Restaurant Name</label>
                   <input
@@ -470,9 +526,9 @@ const SuperAdminDashboard = () => {
         )}
 
         {/* Restaurants List */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900">Restaurants ({filteredRestaurants.length})</h2>
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="px-3 lg:px-4 py-3 border-b border-gray-200">
+            <h2 className="text-base lg:text-lg font-bold text-gray-900">Restaurants ({filteredRestaurants.length})</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -585,7 +641,12 @@ const SuperAdminDashboard = () => {
         {activeTab === 'analytics' && <AdvancedAnalytics />}
         {activeTab === 'subscriptions' && <BillingManagement />}
         
-        {activeTab === 'settings' && <SettingsManagement />}
+        {activeTab === 'settings-system' && <SettingsManagement activeCategory="SYSTEM" />}
+        {activeTab === 'settings-email' && <SettingsManagement activeCategory="EMAIL" />}
+        {activeTab === 'settings-payment' && <SettingsManagement activeCategory="PAYMENT" />}
+        {activeTab === 'settings-security' && <SettingsManagement activeCategory="SECURITY" />}
+        {activeTab === 'settings-plan-limits' && <SettingsManagement activeCategory="PLAN_LIMITS" />}
+        {activeTab === 'settings-general' && <SettingsManagement activeCategory="GENERAL" />}
         
         {activeTab === 'communication' && <CommunicationCenter />}
         
@@ -597,6 +658,7 @@ const SuperAdminDashboard = () => {
             <p className="text-gray-500">Help docs, tutorials, and system content</p>
           </div>
         )}
+        </div>
       </div>
     </div>
   );
