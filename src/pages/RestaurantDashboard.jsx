@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { useSocket } from '../context/SocketContext';
 import InventoryManagement from '../components/restaurant/InventoryManagement';
 import StaffManagement from '../components/restaurant/StaffManagement';
 import KitchenDisplay from '../components/restaurant/KitchenDisplay';
@@ -29,7 +28,6 @@ const RestaurantDashboard = () => {
   const [error, setError] = useState('');
 
   const { user, logout } = useAuth();
-  const socket = useSocket();
 
   useEffect(() => {
     fetchMenus();
@@ -38,19 +36,7 @@ const RestaurantDashboard = () => {
     }
   }, [activeTab]);
 
-  // Socket.IO listeners
-  useEffect(() => {
-    if (socket) {
-      socket.on('new-order', (newOrder) => {
-        console.log('New order received:', newOrder);
-        setOrders(prevOrders => [newOrder, ...prevOrders]);
-      });
 
-      return () => {
-        socket.off('new-order');
-      };
-    }
-  }, [socket]);
 
   const fetchMenus = async () => {
     try {

@@ -211,13 +211,12 @@ const SuperAdminDashboard = () => {
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-4 mb-4 lg:mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3 lg:gap-4 mb-4 lg:mb-6">
               <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-indigo-100 text-sm font-medium">Total Restaurants</p>
                     <p className="text-3xl font-bold mt-2">{restaurants.length}</p>
-                    <p className="text-indigo-100 text-xs mt-1">+2 this month</p>
                   </div>
                   <div className="bg-indigo-400 bg-opacity-30 rounded-full p-3">
                     <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
@@ -232,7 +231,6 @@ const SuperAdminDashboard = () => {
                   <div>
                     <p className="text-emerald-100 text-sm font-medium">Active Restaurants</p>
                     <p className="text-3xl font-bold mt-2">{restaurants.filter(r => r.isActive).length}</p>
-                    <p className="text-emerald-100 text-xs mt-1">{((restaurants.filter(r => r.isActive).length / restaurants.length) * 100).toFixed(1)}% active</p>
                   </div>
                   <div className="bg-emerald-400 bg-opacity-30 rounded-full p-3">
                     <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
@@ -242,29 +240,41 @@ const SuperAdminDashboard = () => {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-violet-500 to-violet-600 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl shadow-lg p-6 text-white">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-violet-100 text-sm font-medium">Total Orders</p>
-                    <p className="text-3xl font-bold mt-2">{totalOrders.toLocaleString()}</p>
-                    <p className="text-violet-100 text-xs mt-1">+12% from last month</p>
+                    <p className="text-amber-100 text-sm font-medium">Trial Restaurants</p>
+                    <p className="text-3xl font-bold mt-2">12</p>
                   </div>
-                  <div className="bg-violet-400 bg-opacity-30 rounded-full p-3">
+                  <div className="bg-amber-400 bg-opacity-30 rounded-full p-3">
                     <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                      <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd" />
                     </svg>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl shadow-lg p-6 text-white">
+              <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-amber-100 text-sm font-medium">Total Revenue</p>
-                    <p className="text-3xl font-bold mt-2">${totalRevenue.toLocaleString()}</p>
-                    <p className="text-amber-100 text-xs mt-1">+8% from last month</p>
+                    <p className="text-purple-100 text-sm font-medium">Subscription</p>
+                    <p className="text-3xl font-bold mt-2">26</p>
                   </div>
-                  <div className="bg-amber-400 bg-opacity-30 rounded-full p-3">
+                  <div className="bg-purple-400 bg-opacity-30 rounded-full p-3">
+                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-violet-500 to-violet-600 rounded-xl shadow-lg p-6 text-white">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-violet-100 text-sm font-medium">Total Revenue</p>
+                    <p className="text-3xl font-bold mt-2">${totalRevenue.toLocaleString()}</p>
+                  </div>
+                  <div className="bg-violet-400 bg-opacity-30 rounded-full p-3">
                     <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
@@ -281,7 +291,7 @@ const SuperAdminDashboard = () => {
                   <div className="flex justify-between items-center mb-3 lg:mb-4">
                     <h3 className="text-base lg:text-lg font-bold text-slate-900">Quick Actions</h3>
                   </div>
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-3">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 lg:gap-3">
                     <button
                       onClick={() => {
                         setShowCreateForm(!showCreateForm);
@@ -299,39 +309,28 @@ const SuperAdminDashboard = () => {
                     </button>
                     
                     <button
-                      onClick={() => setActiveTab('users')}
+                      onClick={() => setActiveTab('settings-general')}
                       className="flex flex-col items-center p-4 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors"
                     >
                       <div className="bg-emerald-600 rounded-full p-3 mb-3">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                       </div>
-                      <span className="text-sm font-medium text-slate-900">Manage Users</span>
+                      <span className="text-sm font-medium text-slate-900">Settings</span>
                     </button>
                     
                     <button
-                      onClick={() => setActiveTab('monitoring')}
+                      onClick={() => setActiveTab('subscriptions')}
                       className="flex flex-col items-center p-4 bg-violet-50 hover:bg-violet-100 rounded-lg transition-colors"
                     >
                       <div className="bg-violet-600 rounded-full p-3 mb-3">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                         </svg>
                       </div>
-                      <span className="text-sm font-medium text-slate-900">System Health</span>
-                    </button>
-                    
-                    <button
-                      onClick={() => setActiveTab('analytics')}
-                      className="flex flex-col items-center p-4 bg-amber-50 hover:bg-amber-100 rounded-lg transition-colors"
-                    >
-                      <div className="bg-amber-600 rounded-full p-3 mb-3">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                      <span className="text-sm font-medium text-slate-900">Analytics</span>
+                      <span className="text-sm font-medium text-slate-900">Billing</span>
                     </button>
                   </div>
                 </div>

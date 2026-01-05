@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSocket } from '../../context/SocketContext';
 import { useAuth } from '../../context/AuthContext';
 
 const NotificationCenter = () => {
@@ -8,38 +7,13 @@ const NotificationCenter = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
   
-  const socket = useSocket();
   const { user } = useAuth();
 
   useEffect(() => {
     fetchNotifications();
   }, []);
 
-  // WebSocket listener for new notifications
-  useEffect(() => {
-    if (socket) {
-      socket.on('new-notification', (newNotification) => {
-        // Check if this notification is for this restaurant
-        if (shouldReceiveNotification(newNotification)) {
-          setNotifications(prev => [newNotification, ...prev]);
-          setUnreadCount(prev => prev + 1);
-        }
-      });
 
-      return () => {
-        socket.off('new-notification');
-      };
-    }
-  }, [socket, user]);
-
-  const shouldReceiveNotification = (notification) => {
-    if (notification.recipients === 'ALL') return true;
-    if (notification.recipients === 'SPECIFIC') {
-      return notification.specificRestaurants.some(r => r.slug === user.restaurantSlug);
-    }
-    // For ACTIVE/TRIAL, we'll let it through and server handles filtering
-    return true;
-  };
 
   const fetchNotifications = async () => {
     try {

@@ -1,36 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useSocket } from '../../context/SocketContext';
 
 const KitchenDisplay = () => {
   const [orders, setOrders] = useState([]);
   const [timers, setTimers] = useState({});
-  const socket = useSocket();
 
   useEffect(() => {
     fetchKitchenOrders();
   }, []);
 
-  useEffect(() => {
-    if (socket && typeof socket.on === 'function') {
-      socket.on('new-order', (newOrder) => {
-        if (newOrder.status === 'PENDING') {
-          setOrders(prevOrders => [newOrder, ...prevOrders]);
-        }
-      });
 
-      socket.on('order-status-updated', (updatedOrder) => {
-        setOrders(prevOrders => 
-          prevOrders.filter(order => order._id !== updatedOrder._id)
-        );
-      });
-
-      return () => {
-        socket.off('new-order');
-        socket.off('order-status-updated');
-      };
-    }
-  }, [socket]);
 
   useEffect(() => {
     const interval = setInterval(() => {
